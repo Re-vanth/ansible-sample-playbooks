@@ -1,0 +1,10 @@
+---
+
+
+
+
+- hosts: all
+  tasks:
+   - name: adding user to mysql
+     mysql_user: name=hive password=hive priv=demo.*:ALL host='%' state=present
+     

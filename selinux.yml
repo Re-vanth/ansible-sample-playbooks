@@ -1,0 +1,9 @@
+---
+
+
+- hosts: all
+  tasks:
+   - name: selinux in enable mode
+     selinux:
+       policy: targeted
+       state: enforcing

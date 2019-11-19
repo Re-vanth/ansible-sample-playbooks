@@ -1,0 +1,3 @@
+[all]
+
+server00.itversity.com ansible_user=admin

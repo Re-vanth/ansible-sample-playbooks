@@ -1,0 +1,13 @@
+---
+
+
+- hosts: all
+  tasks:
+   - name: stop firewalld
+     systemd: name=firewalld state=stopped
+     ignore_errors: yes
+   
+
+   - name: disable firewalld
+     systemd: name=firewalld state=disabled
+     ignore_errors: yes

@@ -1,0 +1,23 @@
+---
+
+
+- hosts: all
+  
+  tasks:
+    - name: install NTPd
+      yum: 
+        name: ntp,ntpdate
+        state: latest
+    - name: set timezone
+      shell: timedatectl set-timezone Asia/Kolkata
+
+    - name: start ntpd
+      service:
+        name: ntpd
+        state: started
+    - name: enable ntpd
+      service: 
+        name: ntpd
+        enabled: yes
+        masked: no
+ 

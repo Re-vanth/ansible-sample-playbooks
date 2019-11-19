@@ -1,0 +1,27 @@
+---
+
+
+- hosts: all
+  tasks:
+   - name: make directory
+     file: 
+       path: /home/admin/virtualmachines
+       owner: admin
+       group: admin
+       mode: 0755
+       recurse: yes
+
+
+   - name: install git
+     yum: 
+       name: git
+       state: present
+       update_cache: yes
+  
+   - name: clone multinode repo
+     git:
+       repo: https://github.com/dgadiraju/multinode.git
+       version: master
+       dest: /home/admin/virtualmachines
+       accept_hostkey: yes
+     become: no

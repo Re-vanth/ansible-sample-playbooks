@@ -1,0 +1,17 @@
+---
+
+- hosts: all
+  tasks:
+   - name: unmounting
+     mount:
+       path: /dev/sda1
+       state: unmounted
+
+   - name: mounting the disk
+     mount: 
+       path: /data
+       src: /dev/sda1
+       opts: bind
+       fstype: ext4
+       state: present
+       

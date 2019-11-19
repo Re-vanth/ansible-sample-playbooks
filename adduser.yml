@@ -1,0 +1,25 @@
+---
+
+
+- hosts: all
+  tasks:
+    - name: add a user 
+      user: 
+        name: revanth
+        append: yes
+        group: wheel
+        createhome: yes
+    
+    - name: add user to sudoers file 
+      lineinfile: 
+        path: /etc/sudoers
+        regexp: '^revanth'
+        line: 'revanth ALL=(ALL) NOPASSWD: ALL'
+        validate: 'visudo -cf %s' 
+
+    - name: set authorized keys taken from file
+      authorized_key: 
+        user: revanth
+        state: present
+        key: "{{ lookup('file','/home/vagrant/.ssh/id_rsa.pub') }}" 
+        

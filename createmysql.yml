@@ -1,0 +1,77 @@
+--- 
+
+- hosts: all
+  tasks:
+   - name: add a user
+     user:
+       name: hive
+       append: yes
+       group : wheel
+       createhome: yes
+
+
+   - name: add user to sudoers file
+     lineinfile: 
+       path: /etc/sudoers
+       regexp: '^hive'
+       line: 'hive ALL=(ALL) NOPASSWD: ALL'
+       validate: 'visudo -cf%s'
+    
+
+   - name: set authorized keys taken from file
+     authorized_key:
+       user: hive
+       state: present
+       key: "{{ lookup ('file','/home/vagrant/.ssh/id_rsa.pub') }}"
+   
+
+   - name: install mysql-python module
+     yum: name=MySQL-python state=installed 
+   
+
+   - name: download mysql resources
+     get_url:
+       url: http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm
+       dest: /opt/mysql
+  
+   - name: install mysql package
+     yum:
+      name: /opt/mysql/mysql-community-release-el7-5.noarch.rpm
+      state: present
+   
+   - name: installing mysql server
+     yum: name=mysql-server state=installed      
+  
+
+   - name: enable mysql
+     systemd:
+       name: mysql
+       enabled: yes 
+       masked: no
+ 
+
+   - name: start mysql service
+     systemd:
+       state: started
+       name: mysql
+
+   - name: create database hive
+     mysql_db: name=hive state=present
+        
+   - name: create hive user
+     mysql_user: 
+       name: hive 
+       password: hive 
+       priv: demo.*:ALL 
+       host: '%'
+       state: present
+   
+    
+   
+
+
+
+
+
+
+
